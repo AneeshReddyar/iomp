@@ -29,7 +29,7 @@ describe("LandingBrand Component", () => {
   it("Verifying the correct brand title and slogan are rendered", () => {
     const wrapper = shallow(<LandingBrand />);
     expect(wrapper.find(".brand-title").text()).toContain(
-      "Tyler's Auto Clinic"
+      "Auto care"
     );
     expect(wrapper.find(".slogan").text()).toContain(
       "Your Trusted Partner for Car Care Solutions!"

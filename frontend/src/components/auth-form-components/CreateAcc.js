@@ -82,7 +82,7 @@ const CreateAcc = () => {
         {/* Auth Create Account Brand Logo */}
         <div className="auth-logo-container">
           <span className="auth-logo">
-            T
+            A
             <span className="logo">
               <FontAwesomeIcon icon={faCar} />
             </span>
@@ -289,7 +289,7 @@ const CreateAcc = () => {
           <p>
             Copyright {year}
             <span className="link-container">
-              <a href="/#">Tyler's Auto Clinic</a>
+              <a href="/#">Auto care</a>
             </span>
             | All Right's Reserved.
           </p>
