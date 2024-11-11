@@ -13,7 +13,7 @@ export default function Footer() {
       <span className="copyright-icon">
         <FontAwesomeIcon icon={faCopyright} />
       </span>
-      Tyler's Auto Clinic | All Rights Reserved
+      Auto care | All Rights Reserved
     </footer>
   );
 }

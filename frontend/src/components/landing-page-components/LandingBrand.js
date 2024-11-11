@@ -14,15 +14,15 @@ const LandingBrand = () => {
       <div className="brand-container">
         <h2 className="brand-title">
           <span className="logo-container">
-            T
+            A
             <span className="logo">
               <FontAwesomeIcon icon={faCar} />
             </span>
             C
           </span>
-          <span className="title">Tyler's Auto Clinic</span>
+          <span className="title">Auto care</span>
         </h2>
-        <p className="slogan">Your Trusted Partner for Car Care Solutions!</p>
+        <p className="slogan">Door step car service!</p>
       </div>
     </section>
   );
