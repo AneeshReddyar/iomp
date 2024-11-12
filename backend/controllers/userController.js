@@ -38,8 +38,12 @@ const userLogin = async (req, res) => {
     const token = createToken(user._id);
 
     const { firstName, lastName } = user;
-
-    res.status(200).json({ firstName, lastName, email, token });
+    role="user"
+    if (email=="provider@ac.com"){
+      role="provider"
+    }
+    console.log(`role : ${role}`)
+    res.status(200).json({ firstName, lastName, email, token,role });
   } catch (error) {
     res.status(400).json({
       message: "login-error-response",

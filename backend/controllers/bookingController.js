@@ -23,6 +23,20 @@ const getBookings = async (req, res) => {
   }
 };
 
+const getAllBookings = async (req, res) => {
+  const userId = req.user._id;
+  const bookingsList = await Booking.find({  });
+
+  try {
+    res.json({
+      message: "All service bookings from the bookings DB Database",
+      bookings: bookingsList,
+    });
+  } catch (error) {
+    res.send(`Error message: ${error.message}`);
+  }
+};
+
 /* Get a single service booking matching a certain ID */
 const getSingleBooking = async (req, res) => {
   const bookingID = req.params.id;
@@ -112,4 +126,5 @@ module.exports = {
   createBooking,
   updateBooking,
   deleteBooking,
+  getAllBookings,
 };

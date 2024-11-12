@@ -25,7 +25,7 @@ import { toast } from "react-toastify";
 const Dashboard = () => {
   /* Getting and destructuring/extracting user information from authentication context */
   const { user } = useAuthContext();
-  const { firstName, lastName } = user;
+  const { firstName, lastName, role } = user;
 
   /* React state for search term and search result status */
   const [searchTerm, setSearchTerm] = useState("");
@@ -65,7 +65,11 @@ const Dashboard = () => {
   useEffect(() => {
     if (user) {
       const fetchData = async () => {
-        const response = await fetch("/api/bookings", {
+        // Choose endpoint based on user role
+        const endpoint =
+          role === "provider" ? "/api/bookings/all" : "/api/bookings";
+
+        const response = await fetch(endpoint, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
         const json = await response.json();
@@ -116,7 +120,7 @@ const Dashboard = () => {
 
       fetchData();
     }
-  }, [user, dispatch, searchTerm]);
+  }, [user, dispatch, searchTerm, role]); // Added role to dependency array
 
   /* Function to handle changes in the search input */
   const handleSearchTerm = (event) => {
@@ -169,13 +173,18 @@ const Dashboard = () => {
   return (
     <section className="dashboard-display-section">
       <div className="title-container">
-        <h2 className="title">Booking Dashboard</h2>
+        <h2 className="title">
+          {role === "provider" ? "Booking List" : "Booking Dashboard"}
+        </h2>
       </div>
       <div className="nav-link-container">
-        <Link to="/schedule-booking" className="link-btn">
-          <FontAwesomeIcon icon={faPlusCircle} />
-          Schedule Booking
-        </Link>
+        {/* Only show Schedule Booking button for users with role !== "provider" */}
+        {role !== "provider" && (
+          <Link to="/schedule-booking" className="link-btn">
+            <FontAwesomeIcon icon={faPlusCircle} />
+            Schedule Booking
+          </Link>
+        )}
         <button className="link-btn" onClick={showModal}>
           <FontAwesomeIcon icon={faInfoCircle} />
           Help
@@ -240,50 +249,70 @@ const Dashboard = () => {
                           {firstName} {lastName}
                         </td>
                         <td className="action-items">
-                          <div className="delete-icon-container">
-                            <ReactTooltip
-                              place="top"
-                              content="Cancel"
-                              anchorId={`delete-icon-${booking._id}`}
-                              variant="info"
-                            ></ReactTooltip>
-                            <CloseIcon
-                              id={`delete-icon-${booking._id}`}
-                              className="icon delete-icon"
-                              onClick={() => {
-                                showDeleteConfirmModal(booking._id);
-                              }}
-                            />
-                          </div>
-                          <div className="update-icon-container">
-                            <ReactTooltip
-                              place="top"
-                              content="Update"
-                              anchorId={`update-icon-${booking._id}`}
-                              variant="info"
-                            ></ReactTooltip>
-                            <Link to={`/update-booking/${booking._id}`}>
-                              <EditIcon
-                                id={`update-icon-${booking._id}`}
-                                className="icon update-icon"
+                          {role === "provider" ? (
+                            <>
+                              <div className="delete-icon-container">
+                                <ReactTooltip
+                                  place="top"
+                                  content="Cancel"
+                                  anchorId={`delete-icon-${booking._id}`}
+                                  variant="info"
+                                ></ReactTooltip>
+                                <CloseIcon
+                                  id={`delete-icon-${booking._id}`}
+                                  className="icon delete-icon"
+                                  onClick={() => {
+                                    showDeleteConfirmModal(booking._id);
+                                  }}
+                                />
+                              </div>
+                              <div className="update-icon-container">
+                                <ReactTooltip
+                                  place="top"
+                                  content="Update"
+                                  anchorId={`update-icon-${booking._id}`}
+                                  variant="info"
+                                ></ReactTooltip>
+                                <Link to={`/update-booking/${booking._id}`}>
+                                  <EditIcon
+                                    id={`update-icon-${booking._id}`}
+                                    className="icon update-icon"
+                                  />
+                                </Link>
+                              </div>
+                              <div className="complete-icon-container">
+                                <ReactTooltip
+                                  place="top"
+                                  content="Complete"
+                                  anchorId={`complete-icon-${booking._id}`}
+                                  variant="info"
+                                ></ReactTooltip>
+                                <DoneIcon
+                                  id={`complete-icon-${booking._id}`}
+                                  className="icon complete-icon"
+                                  onClick={() => {
+                                    deleteBooking(booking._id, "complete");
+                                  }}
+                                />
+                              </div>
+                            </>
+                          ) : (
+                            <div className="delete-icon-container">
+                              <ReactTooltip
+                                place="top"
+                                content="Cancel"
+                                anchorId={`delete-icon-${booking._id}`}
+                                variant="info"
+                              ></ReactTooltip>
+                              <CloseIcon
+                                id={`delete-icon-${booking._id}`}
+                                className="icon delete-icon"
+                                onClick={() => {
+                                  showDeleteConfirmModal(booking._id);
+                                }}
                               />
-                            </Link>
-                          </div>
-                          <div className="complete-icon-container">
-                            <ReactTooltip
-                              place="top"
-                              content="Complete"
-                              anchorId={`complete-icon-${booking._id}`}
-                              variant="info"
-                            ></ReactTooltip>
-                            <DoneIcon
-                              id={`complete-icon-${booking._id}`}
-                              className="icon complete-icon"
-                              onClick={() => {
-                                deleteBooking(booking._id, "complete");
-                              }}
-                            />
-                          </div>
+                            </div>
+                          )}
                         </td>
                       </tr>
                     );
