@@ -8,6 +8,7 @@
 const router = require("express").Router();
 const {
   getBookings,
+  getAllBookings,
   getSingleBooking,
   createBooking,
   updateBooking,
@@ -19,8 +20,11 @@ const requireAuth = require("../middleware/requireAuth");
 /* Require authorization for all booking routes */
 router.use(requireAuth);
 
-/* GET request for all service bookings */
+/* GET request for user service bookings */
 router.get("/", getBookings);
+
+/* GET request for all service bookings */
+router.get("/all", getAllBookings);
 
 /* GET request for a service booking based on ID */
 router.get("/:id", getSingleBooking);

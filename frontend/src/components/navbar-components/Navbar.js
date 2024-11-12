@@ -24,7 +24,7 @@ const Navbar = () => {
     <div className="navbar nav-footer">
       <Link to="/">
         <span className="nav-logo-container">
-          T
+          A
           <span className="nav-logo">
             <FontAwesomeIcon icon={faCar} />
           </span>
