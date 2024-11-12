@@ -43,7 +43,7 @@ const getSingleBooking = async (req, res) => {
   const userId = req.user._id;
   const singleBooking = await Booking.findOne({
     _id: bookingID,
-    userId: userId,
+    // userId: userId,
   });
 
   try {
